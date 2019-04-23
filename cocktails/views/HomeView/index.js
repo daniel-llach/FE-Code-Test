@@ -12,7 +12,6 @@ import DrinkCard from '../../components/DrinkCard'
 
 class HomeView extends Component {
   state = {
-    loading: false,
     page: 0,
     posts: []
   }
@@ -27,27 +26,15 @@ class HomeView extends Component {
   }
 
   addPosts() {
-    this.setState({ loading: true }, () => {
-      const { page } = this.state
-      let newPosts = []
-      for (let i = page * 20; i < page * 20 + 20; i++) {
-        newPosts.push(this.props.cocktails[i])
-      }
-      this.setState({
-        posts: [...this.state.posts, ...newPosts],
-        page: page + 1,
-        loading: false
-      })
+    const { page } = this.state
+    let newPosts = []
+    for (let i = page * 20; i < page * 20 + 20; i++) {
+      newPosts.push(this.props.cocktails[i])
+    }
+    this.setState({
+      posts: [...this.state.posts, ...newPosts],
+      page: page + 1
     })
-  }
-
-  renderFooter() {
-    if (!this.state.loading) return null
-    return (
-      <View style={styles.footer}>
-        <ActivityIndicator animating size="large" />
-      </View>
-    )
   }
 
   render() {
@@ -60,7 +47,6 @@ class HomeView extends Component {
               renderItem={({ item }) => (
                 <DrinkCard
                   idDrink={item.idDrink}
-                  ListFooterComponent={this.renderFooter}
                   navigate={this.props.navigation.navigate}
                   strDrink={item.strDrink}
                   strDrinkThumb={item.strDrinkThumb}
